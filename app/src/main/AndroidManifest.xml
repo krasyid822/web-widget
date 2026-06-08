@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:windowSoftInputMode="adjustResize"
         android:theme="@style/Theme.WebWidgetApp">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -21,95 +22,40 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <!-- Per-widget URL configuration screen shown by launcher when adding widget -->
+        <activity
+            android:name=".WidgetConfigActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
-        <receiver android:name=".WebWidgetProvider1x1" android:exported="true" android:label="Web Widget 1x1">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.webwidgetapp.ACTION_REFRESH" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info_1x1" />
-        </receiver>
+        <!-- Full-screen in-app WebView for opening pages from widget or app -->
+        <activity
+            android:name=".WebViewActivity"
+            android:exported="false"
+            android:theme="@style/Theme.WebWidgetApp" />
 
-        <receiver android:name=".WebWidgetProvider2x1" android:exported="true" android:label="Web Widget 2x1">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.webwidgetapp.ACTION_REFRESH" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info_2x1" />
-        </receiver>
-
-        <receiver android:name=".WebWidgetProvider2x2" android:exported="true" android:label="Web Widget 2x2">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.webwidgetapp.ACTION_REFRESH" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info_2x2" />
-        </receiver>
-
-        <receiver android:name=".WebWidgetProvider3x2" android:exported="true" android:label="Web Widget 3x2">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.webwidgetapp.ACTION_REFRESH" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info_3x2" />
-        </receiver>
-
-        <receiver android:name=".WebWidgetProvider3x3" android:exported="true" android:label="Web Widget 3x3">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.webwidgetapp.ACTION_REFRESH" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info_3x3" />
-        </receiver>
-
-        <receiver android:name=".WebWidgetProvider4x1" android:exported="true" android:label="Web Widget 4x1">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.webwidgetapp.ACTION_REFRESH" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info_4x1" />
-        </receiver>
-
-        <receiver android:name=".WebWidgetProvider4x2" android:exported="true" android:label="Web Widget 4x2">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.webwidgetapp.ACTION_REFRESH" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info_4x2" />
-        </receiver>
-
-        <receiver android:name=".WebWidgetProvider4x3" android:exported="true" android:label="Web Widget 4x3">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.webwidgetapp.ACTION_REFRESH" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info_4x3" />
-        </receiver>
-
-        <receiver android:name=".WebWidgetProvider4x4" android:exported="true" android:label="Web Widget 4x4">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.webwidgetapp.ACTION_REFRESH" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info_4x4" />
-        </receiver>
-
-        <receiver android:name=".WebWidgetProvider5x5" android:exported="true" android:label="Web Widget 5x5">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.webwidgetapp.ACTION_REFRESH" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info_5x5" />
-        </receiver>
-
+        <!-- Auto-refresh foreground service -->
         <service
             android:name=".WidgetUpdateService"
-            android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <receiver
+            android:name=".WebWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.example.webwidgetapp.ACTION_REFRESH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
     </application>
 
 </manifest>
