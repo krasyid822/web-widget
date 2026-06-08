@@ -1,0 +1,24 @@
+# Gradle caches and outputs
+.gradle/
+/build/
+/*/build/
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Local configuration (contains SDK paths, etc.)
+local.properties
+
+# Signing keys / Keystores (CRITICAL security best practice)
+*.jks
+*.keystore
+
+# Log files
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
