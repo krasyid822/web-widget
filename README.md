@@ -1,3 +1,5 @@
+![Screenrecord Penggunaan Widget](./assets/demo/web_wiget.gif)
+
 tambahkan izin geolokasi akurasi tinggi
 kalau bisa gunakan browser default ketimbang android system webview sebagai enginenya
 
